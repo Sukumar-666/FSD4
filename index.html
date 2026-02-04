@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="taskApp">
+<head>
+    <meta charset="UTF-8">
+    <title>TaskMaster Hub</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(120deg, #6a11cb, #2575fc);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card {
+            width: 420px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            padding: 25px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #2575fc;
+            margin-bottom: 5px;
+        }
+
+        .count {
+            text-align: center;
+            color: #777;
+            margin-bottom: 20px;
+        }
+
+        .add-task {
+            display: flex;
+            gap: 10px;
+        }
+
+        .add-task input {
+            flex: 1;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .add-task button {
+            padding: 10px 16px;
+            background: #2575fc;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .filters {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0;
+        }
+
+        .filters button {
+            flex: 1;
+            margin: 0 3px;
+            padding: 6px;
+            border-radius: 6px;
+            border: none;
+            background: #eee;
+            cursor: pointer;
+        }
+
+        ul {
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            margin-bottom: 8px;
+            background: #f8f9ff;
+            border-radius: 8px;
+        }
+
+        .task-name.completed {
+            text-decoration: line-through;
+            color: #999;
+        }
+
+        .actions button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #2575fc;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+
+<body ng-controller="taskController">
+
+<div class="card">
+    <h2>TaskMaster Hub</h2>
+    <div class="count">{{remaining()}} of {{tasks.length}} remaining</div>
+
+    <div class="add-task">
+        <input type="text" ng-model="newTask" placeholder="Enter new task">
+        <button ng-click="addTask()">Add</button>
+    </div>
+
+    <div class="filters">
+        <button ng-click="filterStatus=''">All</button>
+        <button ng-click="filterStatus=false">Pending</button>
+        <button ng-click="filterStatus=true">Done</button>
+    </div>
+
+    <ul>
+        <li ng-repeat="task in tasks | filter:{completed:filterStatus}">
+            <div>
+                <input type="checkbox" ng-model="task.completed">
+                <span class="task-name" ng-class="{completed:task.completed}">
+                    {{task.name}}
+                </span>
+            </div>
+            <div class="actions">
+                <button ng-click="editTask(task)">EDIT</button>
+                <button ng-click="deleteTask($index)">DELETE</button>
+            </div>
+        </li>
+    </ul>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
